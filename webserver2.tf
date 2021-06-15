@@ -19,16 +19,17 @@ resource "oci_core_instance" "webserver2" {
 
 }
 
-data "oci_core_vnic_attachments" "vnic-attachment2" {
+data "oci_core_vnic_attachments" "web-vnic-attachment2" {
   compartment_id = var.compartment_id
   availability_domain = var.ads[1]
   instance_id = oci_core_instance.webserver2.id
 }
 
 data "oci_core_vnic" "webserver2-vnic" {
-  vnic_id = data.oci_core_vnic_attachments.vnic-attachment2.0.vnic_id
+  vnic_id = data.oci_core_vnic_attachments.web-vnic-attachment2.vnic_attachments.0.vnic_id
+
 }
 
-output "webserver_publicip" {
+output "webserver2_publicip" {
   value = [data.oci_core_vnic.webserver2-vnic.public_ip_address]
 }

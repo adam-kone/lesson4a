@@ -17,14 +17,14 @@ resource "oci_core_instance" "bastion" {
     ssh_authorized_keys= "${file("${var.ssh_authorized_keys}")}"
   }
 }
-data "oci_core_vnic_attachments" "vnic-attachment" {
+data "oci_core_vnic_attachments" "web-vnic-attachment" {
   compartment_id = var.compartment_id
   availability_domain = var.ads[0]
   instance_id = oci_core_instance.webserver.id
 }
 
 data "oci_core_vnic" "bastion-vnic" {
-  vnic_id = data.oci_core_vnic_attachments.vnic-attachment.0.vnic_id
+  vnic_id = data.oci_core_vnic_attachments.web-vnic-attachment.vnic_attachments.0.vnic_id
 }
 
 output "bastion-publicip" {
